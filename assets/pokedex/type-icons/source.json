@@ -1,0 +1,25 @@
+{
+  "icons": "https://github.com/partywhale/pokemon-type-icons",
+  "commit": "fcbe6978c61c359680bc07636c3f9bdc0f346b43",
+  "palette": "User-provided 18-type reference, 2026-10-04",
+  "colors": {
+    "normal": "#9fa19f",
+    "fire": "#e62829",
+    "water": "#2980ef",
+    "electric": "#fac000",
+    "grass": "#3fa129",
+    "ice": "#3fd8ff",
+    "fighting": "#ff8000",
+    "poison": "#9141cb",
+    "ground": "#915121",
+    "flying": "#81b9ef",
+    "psychic": "#ef4179",
+    "bug": "#91a119",
+    "rock": "#afa981",
+    "ghost": "#704170",
+    "dragon": "#5060e1",
+    "dark": "#50413f",
+    "steel": "#60a1b8",
+    "fairy": "#ef70ef"
+  }
+}

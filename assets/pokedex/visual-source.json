@@ -1,0 +1,30 @@
+{
+  "title": "口袋图鉴",
+  "created": "2026-10-04",
+  "method": "OpenAI built-in image generation, selected refined Rotom Dex fan-app artwork",
+  "file": "pocket-dex-logo.png",
+  "size": [
+    1536,
+    1024
+  ],
+  "mode": "RGBA",
+  "sha256": "07d55a4f819ba4a343f5639367dc5331166e8903c6071bec82604c77daa8a04d",
+  "reference": "https://www.pokemon.co.jp/ex/sun_moon/collect/160602_01.html",
+  "reference_image": "https://www.pokemon.co.jp/ex/sun_moon/common/images/collect/01/display1.png",
+  "type_icon_source": "type-icons/source.json",
+  "export": {
+    "script": "tools/generate_visual_assets.py",
+    "resvg": "2.6.2",
+    "Pillow": "12.3.0",
+    "format": "RGB565A8",
+    "logo_max_size": [
+      208,
+      180
+    ],
+    "type_sizes": [
+      20,
+      24
+    ]
+  },
+  "rights": "Generated fan-app artwork based on Pokemon designs; not an official logo. Pokemon designs belong to their respective rights holders."
+}

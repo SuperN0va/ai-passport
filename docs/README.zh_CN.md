@@ -2,6 +2,8 @@
 
 <h1 align="center">FoloToy AI PASSPORT</h1>
 
+本功能分支实现了[口袋图鉴](pokedex.zh_CN.md)，使用方式、数据来源和验证状态见应用文档。
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../assets/images/logo-wordmark-dark.png">

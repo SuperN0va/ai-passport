@@ -44,6 +44,9 @@ it anything—from a pocket companion to something no one has imagined yet.
 
 ## Find your starting point
 
+This feature branch implements [Pocket Dex](pokedex.md), the offline Chinese
+Pokédex application. Its controls, data sources and validation status are documented there.
+
 | I want to… | Start here |
 | --- | --- |
 | Use the device or try an official play | [Getting started](https://ai-passport.folotoy.cn/guides/getting-started/) · [Official plays](https://ai-passport.folotoy.cn/plays/) |

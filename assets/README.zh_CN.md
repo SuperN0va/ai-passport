@@ -8,6 +8,8 @@
 
 ## 字库（fonts）
 
+口袋图鉴内嵌 `fonts/dex_font_16.c` 和 `fonts/dex_font_20.c`，使用 Noto Sans CJK SC Regular 的 16/20 px、未压缩 2 bpp 子集，由 `tools/generate_pokedex.py` 和 `lv_font_conv@1.5.3` 生成。字符清单、来源哈希分别记录在 `fonts/pokedex-glyphs.txt`、`fonts/font-source.json`，SIL OFL 许可在 `fonts/NotoSansCJK-LICENSE.txt`。复现方式和实际 LVGL 字形检查见[口袋图鉴说明](../docs/pokedex.zh_CN.md)。
+
 可复用的字库文件与生成的字库源码放在 `fonts/`。
 
 - 命名要能反映字族、字重、字级与格式。
@@ -16,6 +18,22 @@
 - 不提交许可不允许分发的字库。
 
 ## 图片（images）
+
+`pokedex/pocket-dex-logo.png` 是 2026-10-04 使用内置图像生成工具制作的透明像素
+标题，文字为“口袋图鉴”。洛托姆图鉴轮廓参考用户提供的示例与
+[《太阳／月亮》官方图](https://www.pokemon.co.jp/ex/sun_moon/collect/160602_01.html)。
+这是同人应用的生成 Logo，不是官方宝可梦标志，也不代表官方关联。
+源图尺寸与哈希记录在 `pokedex/visual-source.json`。
+
+`pokedex/type-icons/` 的 18 个 SVG 来自
+[partywhale/pokemon-type-icons](https://github.com/partywhale/pokemon-type-icons)，
+固定提交为 `fcbe6978c61c359680bc07636c3f9bdc0f346b43`，保留其 MIT 许可。
+它们复现游戏中的属性符号；`source.json` 保存从用户属性参考图采样的色板。
+深色或白色前景用于改善小屏对比度，宝可梦设计仍属于各自权利人。
+`tools/generate_visual_assets.py` 导出常驻 Flash 的 RGB565A8 数组，复现方法见
+[应用说明](../docs/pokedex.zh_CN.md#数据再生成与字体检查)。
+
+口袋图鉴的 `pokedex/catalog.json` 是可审阅的数据集，`pokedex/sprites.bin` 包含 1025 张 48×48 RGB565 压缩图片，固件从 Flash 读取并只解码当前图片。[应用文档](../docs/pokedex.zh_CN.md)记录来源、游戏版本规则及第三方权利；这些游戏数据与图片不被声明为原创 MIT 素材。应用不内嵌任何音频。
 
 可复用的源图与生成的显示资产放在 `images/`。
 

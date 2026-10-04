@@ -11,6 +11,13 @@ usage() {
 run_static_checks() {
     local actionlint_bin
     local test_dir
+    local demo_compile_flags=()
+    # PE/COFF does not discard unused externally visible demo entry points the
+    # same way ELF --gc-sections does. LTO removes those unreachable UI paths;
+    # assertions and the lifecycle/fault-injection test bodies stay enabled.
+    case "$("${CC:-cc}" -dumpmachine)" in
+        *mingw*) demo_compile_flags=(-flto -O2) ;;
+    esac
 
     python3 tools/check_repo.py
 
@@ -24,6 +31,15 @@ run_static_checks() {
     "${actionlint_bin}" -color .github/workflows/*.yml
 
     test_dir="$(mktemp -d /tmp/ai-passport-host-tests.XXXXXX)"
+    "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Imain \
+        tests/test_dex_model.c main/dex_model.c main/dex_data.c \
+        -o "${test_dir}/test_dex_model"
+    "${test_dir}/test_dex_model"
+    "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Imain \
+        -DLODEPNG_NO_COMPILE_ENCODER -DLODEPNG_NO_COMPILE_DISK \
+        tests/test_dex_sprite.c main/dex_sprite.c main/vendor/lodepng.c \
+        -o "${test_dir}/test_dex_sprite"
+    "${test_dir}/test_dex_sprite"
     "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Imain \
         tests/test_ui_pixel_math.c main/ui_pixel_math.c \
         -o "${test_dir}/test_ui_pixel_math"
@@ -56,6 +72,7 @@ run_static_checks() {
     "${test_dir}/test_bsp_audio_recovery"
     for demo in audio low_power ble wifi; do
         "${CC:-cc}" -std=c11 -Wall -Wextra -Werror \
+            "${demo_compile_flags[@]}" \
             -ffunction-sections -fdata-sections -Itests/demo_stubs -Imain \
             "tests/test_demo_${demo}_runtime.c" -Wl,--gc-sections \
             -o "${test_dir}/test_demo_${demo}_runtime"
@@ -64,6 +81,7 @@ run_static_checks() {
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_deep_sleep_contract.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_check_repo.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_verify_firmware.py
+    PYTHONDONTWRITEBYTECODE=1 python3 tests/test_pokedex_layout.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_archive_firmware.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_install_passport_skills.py
     rm -rf "${test_dir}"
@@ -72,6 +90,13 @@ run_static_checks() {
 
 run_firmware_checks() (
     local validation_build_dir
+
+    case "$(uname -s)" in
+        MINGW*|MSYS*)
+            powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/validate_firmware.ps1
+            return
+            ;;
+    esac
 
     if ! command -v idf.py >/dev/null 2>&1; then
         echo "ERROR: idf.py is not available; activate ESP-IDF 5.5.3 first." >&2
@@ -87,6 +112,7 @@ run_firmware_checks() (
     idf.py -B "${validation_build_dir}" merge-bin \
         -o "${validation_build_dir}/FoloToy-AI-Passport-full.bin"
     python3 tools/verify_firmware.py "${validation_build_dir}"
+    python3 tools/verify_pokedex_layout.py "${validation_build_dir}"
     PYTHONDONTWRITEBYTECODE=1 python3 tools/archive_firmware.py create \
         "${validation_build_dir}" --archive-root "${repo_root}/build/firmware"
     mkdir -p "${repo_root}/build"
